@@ -31,7 +31,7 @@ Setup
 ```
 7. Clone the git repository https://github.com/al-ahmedabdullah/uppaalconnector.git in /opt/chiminey/current/chiminey
 ```
-	$ git clone https://github.com/al-ahmedabdullah/uppaalconnector.git
+	$ git clone https://github.com/alahmedabdullah/uppaalconnector.git
 ```
 8. Change ownership of the newly created uppalconnector directory
 ```
