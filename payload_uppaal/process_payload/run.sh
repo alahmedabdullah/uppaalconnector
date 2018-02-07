@@ -10,5 +10,10 @@ verifyta_exe=$(find /opt -name 'verifyta' 2>&1)
 
 export PATH=$java_path:$PATH
 
-$verifyta_exe $INPUT_DIR/{{uppaal_model}} {{param_string}} > $OUTPUT_DIR/result
+cd $INPUT_DIR
+
+$verifyta_exe $(cat cli_parameters.txt) &> runlog.txt
+
+
+cp ./*.txt ../$OUTPUT_DIR
 # --- EOF ---
