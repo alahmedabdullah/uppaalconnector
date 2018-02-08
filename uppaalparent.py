@@ -19,6 +19,7 @@
 # IN THE SOFTWARE.
 
 import ast
+import itertools
 import logging
 import ast
 import os
@@ -59,6 +60,12 @@ class UppaalParent(Parent):
                 logger.error("cannot convert %s to internal_sweep_map" % getval(run_settings, '%s/input/uppaal/internal_sweep_map' % django_settings.SCHEMA_PREFIX))
             try:
                 map = dict(ast.literal_eval(internal_sweep_map))
+                if 'trans_t_order_flag' in map:
+                    map.pop('trans_t_order_flag')
+                    if 'trno' in map:
+                        trno = map.get('trno')
+                        trans_t_order_list = get_trans_t_order_list(trno[0])
+                        map['trans_t_order'] = trans_t_order_list
             except ValueError,e:
                 logger.error(e)
         else:
@@ -68,3 +75,23 @@ class UppaalParent(Parent):
         
         logger.debug('map=%s' % map)
         return map, rand_index
+
+def get_trans_t_order_list(trno):
+  result = ''
+  perm_str=''
+  for i in range(trno):
+    perm_str= perm_str + str(i)
+
+  permutation = itertools.permutations(perm_str,trno)
+
+  for perm in permutation:
+    result += "{"
+    for j, p in enumerate(perm):
+      result += p
+      if(j<len(perm)-1):
+        result += ","
+    result += "};"
+  result2=result.rstrip(";")
+  result_list=result2.split (';')
+
+  return result_list
