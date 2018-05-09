@@ -21,8 +21,7 @@ Setup
 	'uppaal':  {'init': 'chiminey.uppaalconnector.initialise.UppaalInitial',
              	      'name': 'uppaal',
             	      'description': 'The UPPAAL Model Checker',
-             	      'payload': '/opt/chiminey/current/chiminey/uppaalconnector/payload_uppaal',
-             	      'sweep': True
+             	      'payload': '/opt/chiminey/current/chiminey/uppaalconnector/payload_uppaal'
                     },
 ```
 6. Modify the INPUT_FIELDS dictionary in settings_change.py file to have following:
