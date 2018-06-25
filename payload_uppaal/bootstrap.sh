@@ -6,6 +6,8 @@ WORK_DIR=`pwd`
 
 yum -y update
 yum install -y unzip
+yum -y install epel-release
+yum -y install django 
 
 # Install Java
 ext="tar.gz"
