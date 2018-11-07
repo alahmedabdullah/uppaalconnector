@@ -2,9 +2,9 @@ UPPAAL Smart Connector for Chiminey
 ==================================
 UPPAAL allows formal model checking of a system modeled as networks of timed automata. 
 
-Verifying a complex uppaal model may become compute-intensive - thus make it a suitable candidate for parallel execution utilising compute resources over the cloud using Chiminey. "Uppaal Smart Connector for Chiminey" allows parameter sweep i.e. internal sweep and external sweep over uppaal  models which facilitates scheduling computes over the cloud for parallel execution.
+Verifying a complex uppaal model may become compute-intensive - thus make it a suitable candidate for parallel execution utilising compute resources over the cloud using Chiminey. "Uppaal Smart Connector for Chiminey" allows parameter sweep over uppaal models which facilitates scheduling computes over the cloud for parallel execution.
 
-Once "Uppaal Smart Connector" is activated in Chiminey, Chiminey portal then allows to configure and submit a UPPAAL job for execution.
+After the "Uppaal Smart Connector" is activated in Chiminey, the Chiminey portal for Uppaal Samrt Connector allows to configure and submit a UPPAAL job for execution.
 
 UPPAAL Smart Connector Core Function
 -----------------------------------
@@ -95,12 +95,12 @@ So "run.sh_template" file must be located in INPUT_DIR. Since it is a template f
 "{{uppaal_model}}" is name of the uppaal model file loacated in the input directory, and "{{param_string}}" is the string with all various option that UPPAAL allows for model-checking. The latest version of UPPAAL includes query properties within the model file. For example let's assume we have uppaal model "2doors.xml" (assuming the model file contains all querries to be verified against it). Therefore, following is the command to execute this model against UPPAAL:
 
 ```
-/opt/uppaal64-4.1.19/bin-Linux/verifyta 2doors.xml -A
+/opt/uppaal64-4.1.19/bin-Linux/verifyta 2doors.xml -o2 -t1 -V 
 ```  
 Thus JSON dictionary to be passed from "Chiminey Protal" for above command to execute this uppaal model would be:
 
 ```
-{ "uppaal_model" :  [ "2doors.xml" ], "param_string" :  [ "-A" ] }
+{"cli_parameters" : ["2doors.xml -o2 -t1 -V" ] }
 ```
 
 The Input Directory
@@ -127,30 +127,16 @@ Configure, Create and Execute a Uppaal Job
 ------------------------------------------
 "Create Job" tab in "Chiminey Portal" lists "uppaal_sweep" form for creation and submission of uppaal job. "sweep_uppaal" form require definition of "Compute Resource Name" and "Storage Location". Appropiate "Compute Resource" and "Storage Resource" need to be defined  through "Settings" tab in the "Chiminey portal".
 
-External Sweep
---------------
-To perform external sweep "UPPAAL Smart Connector" in Chiminey System, splecify appropiate JSON dictionary in "Values to sweep over" field  of the "sweep_uppaal" form accessible through "Chiminey Portal". An example JSON dictionary to perform external sweep for the "consensus.nm" and  "consensus.pctl" could be as following:
+Payload parameter Sweep
+----------------------
+Parameter sweep for "UPPAAL Smart Connector" in Chiminey System may be performed by specifying appropiate JSON dictionary in "payload parameter sweep" field  of the "uppaal" form. An example JSON dictionary to run parameter sweep for the "2doors.xml" could be as following:
 
 ```
-{ "uppaal_model" :  [ "2doors.xml" ], "param_string" :  [ "-A" , "-C", "-T"] }
+{"cli_parameters" : [ "2doors.xml -o1 -t1 -V", "2doors.xml -o2 -t1 -V", "2doors.xml -o3 -t1 -V", "2doors.xml -o1 -t2 -V", "2doors.xml -o2 -t2 -V", "2doors.xml -o3 -t2 -V" ] }
 ``` 
-
-Above would create three individual process. To allocate one cloud VM for each process, input fieldis in "Cloud Compute Resource" for "sweep_uppaal" form has to be:
-
-```
-Number of VM instances : 1
-Minimum No. VMs : 1
-```
-Internal Sweep
---------------
-Inxternal sweep for "UPPAAL Smart Connector" in Chiminey System may be performed by specifying appropiate JSON dictionary in "Internal sweep map" field  of the "sweep_uppaal" form. An example JSON dictionary to run internal sweep for the "consensus.nm" and  "consensus.pctl" could be as following:
-
-```
-{ "uppaal_model" :  [ "2doors.xml" ], "param_string" :  [ "-A" , "-C", "-T"] }
-``` 
-Above would create three individual process. To allocate maximum two cloud VMs - thus execute two UPPAAL job in same VM,  input fields in "Cloud Compute Resource" for "sweep_uppaal" form has to be:
+Above would create six individual process. To allocate maximum two cloud VMs - thus execute three UPPAAL job in each VM,  input fields in "Cloud Compute Resource" for "uppaal" form has to be:
 
 ```
 Number of VM instances : 2
-Minimum No. VMs : 1
+Minimum No. VMs : 2
 ```
